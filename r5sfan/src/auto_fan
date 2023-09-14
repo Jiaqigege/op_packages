@@ -1,0 +1,21 @@
+#!/bin/sh /etc/rc.common
+
+START=99
+
+start(){
+    if [ ! -d "/sys/class/pwm/pwmchip0/pwm0" ]; then
+        echo 0 > /sys/class/pwm/pwmchip0/export
+    fi
+    echo 40000 > /sys/class/pwm/pwmchip0/pwm0/period
+    echo 39300 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle
+    echo inversed > /sys/class/pwm/pwmchip0/pwm0/polarity
+    echo 1 > /sys/class/pwm/pwmchip0/pwm0/enable
+}
+
+stop(){
+    echo 40000 > /sys/class/pwm/pwmchip0/pwm0/duty_cycle
+    if [ -d "/sys/class/pwm/pwmchip0/pwm0" ]; then
+        echo 0 > /sys/class/pwm/pwmchip0/unexport
+    fi
+}
+
